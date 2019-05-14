@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import firebase from "../../firebase";
 import { connect } from "react-redux";
 import { setCurrentChannel, setPrivateChannel } from "../../actions";
 import { Menu, Icon } from "semantic-ui-react";
 
-class Starred extends Component {
+class Starred extends React.Component {
   state = {
     user: this.props.currentUser,
     usersRef: firebase.database().ref("users"),
@@ -28,6 +28,7 @@ class Starred extends Component {
           starredChannels: [...this.state.starredChannels, starredChannel]
         });
       });
+
     this.state.usersRef
       .child(userId)
       .child("starred")

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import firebase from "../../firebase";
 import {
   Grid,
@@ -11,7 +11,7 @@ import {
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
-class Login extends Component {
+class Login extends React.Component {
   state = {
     email: "",
     password: "",
@@ -19,20 +19,15 @@ class Login extends Component {
     loading: false
   };
 
-  // display errors to user
   displayErrors = errors =>
     errors.map((error, i) => <p key={i}>{error.message}</p>);
 
-  // * 2) set event handle and assign it to set state
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleSubmit = e => {
-    // prevent the default actions to reload the page
-    e.preventDefault();
-
-    // form validation
+  handleSubmit = event => {
+    event.preventDefault();
     if (this.isFormValid(this.state)) {
       this.setState({ errors: [], loading: true });
       firebase
@@ -42,7 +37,7 @@ class Login extends Component {
           console.log(signedInUser);
         })
         .catch(err => {
-          console.log(err);
+          console.error(err);
           this.setState({
             errors: this.state.errors.concat(err),
             loading: false
@@ -53,7 +48,6 @@ class Login extends Component {
 
   isFormValid = ({ email, password }) => email && password;
 
-  // display error box around input
   handleInputError = (errors, inputName) => {
     return errors.some(error => error.message.toLowerCase().includes(inputName))
       ? "error"
@@ -61,16 +55,14 @@ class Login extends Component {
   };
 
   render() {
-    // * 3) Destructing
     const { email, password, errors, loading } = this.state;
 
-    // pass setstate value into form
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
-        <Grid.Column style={{ maxWidth: 250 }}>
+        <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h1" icon color="violet" textAlign="center">
             <Icon name="code branch" color="violet" />
-            Login to Devchat
+            Login to DevChat
           </Header>
           <Form onSubmit={this.handleSubmit} size="large">
             <Segment stacked>
@@ -83,8 +75,9 @@ class Login extends Component {
                 onChange={this.handleChange}
                 value={email}
                 className={this.handleInputError(errors, "email")}
-                type="text"
+                type="email"
               />
+
               <Form.Input
                 fluid
                 name="password"
@@ -96,6 +89,7 @@ class Login extends Component {
                 className={this.handleInputError(errors, "password")}
                 type="password"
               />
+
               <Button
                 disabled={loading}
                 className={loading ? "loading" : ""}
@@ -110,7 +104,7 @@ class Login extends Component {
           {errors.length > 0 && (
             <Message error>
               <h3>Error</h3>
-              {this.displayErrors(this.state.errors)}
+              {this.displayErrors(errors)}
             </Message>
           )}
           <Message>

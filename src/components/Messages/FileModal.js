@@ -1,15 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import mime from "mime-types";
 import { Modal, Input, Button, Icon } from "semantic-ui-react";
 
-class FileModal extends Component {
+class FileModal extends React.Component {
   state = {
     file: null,
     authorized: ["image/jpeg", "image/png"]
   };
 
-  addFile = e => {
-    const file = e.target.files[0];
+  addFile = event => {
+    const file = event.target.files[0];
     if (file) {
       this.setState({ file });
     }
@@ -21,10 +21,7 @@ class FileModal extends Component {
 
     if (file !== null) {
       if (this.isAuthorized(file.name)) {
-        // send file
-        const metadata = {
-          contentType: mime.lookup(file.name)
-        };
+        const metadata = { contentType: mime.lookup(file.name) };
         uploadFile(file, metadata);
         closeModal();
         this.clearFile();
@@ -39,6 +36,7 @@ class FileModal extends Component {
 
   render() {
     const { modal, closeModal } = this.props;
+
     return (
       <Modal basic open={modal} onClose={closeModal}>
         <Modal.Header>Select an Image File</Modal.Header>
@@ -52,11 +50,11 @@ class FileModal extends Component {
           />
         </Modal.Content>
         <Modal.Actions>
-          <Button color="red" inverted onClick={closeModal}>
-            <Icon name="remove" /> Cancel
-          </Button>
           <Button onClick={this.sendFile} color="green" inverted>
             <Icon name="checkmark" /> Send
+          </Button>
+          <Button color="red" inverted onClick={closeModal}>
+            <Icon name="remove" /> Cancel
           </Button>
         </Modal.Actions>
       </Modal>
