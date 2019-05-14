@@ -1,5 +1,6 @@
 import * as actionTypes from "./types";
 
+/* User Actions */
 export const setUser = user => {
   return {
     type: actionTypes.SET_USER,
@@ -15,7 +16,7 @@ export const clearUser = () => {
   };
 };
 
-// channel actions
+/* Channel Actions */
 export const setCurrentChannel = channel => {
   return {
     type: actionTypes.SET_CURRENT_CHANNEL,
@@ -30,6 +31,15 @@ export const setPrivateChannel = isPrivateChannel => {
     type: actionTypes.SET_PRIVATE_CHANNEL,
     payload: {
       isPrivateChannel
+    }
+  };
+};
+
+export const setUserPosts = userPosts => {
+  return {
+    type: actionTypes.SET_USER_POSTS,
+    payload: {
+      userPosts
     }
   };
 };
