@@ -24,6 +24,13 @@ class MessageForm extends React.Component {
     emojiPicker: false
   };
 
+  componentWillUnmount() {
+    if (this.state.uploadTask !== null) {
+      this.state.uploadTask.cancel();
+      this.setState({ uploadTask: null });
+    }
+  }
+
   openModal = () => this.setState({ modal: true });
 
   closeModal = () => this.setState({ modal: false });
@@ -32,8 +39,8 @@ class MessageForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleKeyDown = e => {
-    if (e.keyCode === 13) {
+  handleKeyDown = event => {
+    if (event.keyCode === 13) {
       this.sendMessage();
     }
 
@@ -53,18 +60,13 @@ class MessageForm extends React.Component {
   };
 
   handleTogglePicker = () => {
-    this.setState({
-      emojiPicker: !this.state.emojiPicker
-    });
+    this.setState({ emojiPicker: !this.state.emojiPicker });
   };
 
   handleAddEmoji = emoji => {
     const oldMessage = this.state.message;
-    const newMessage = this.colonToUnicode(`${oldMessage} ${emoji.colons}`);
-    this.setState({
-      message: newMessage,
-      emojiPicker: false
-    });
+    const newMessage = this.colonToUnicode(` ${oldMessage} ${emoji.colons} `);
+    this.setState({ message: newMessage, emojiPicker: false });
     setTimeout(() => this.messageInputRef.focus(), 0);
   };
 
@@ -228,7 +230,7 @@ class MessageForm extends React.Component {
           label={
             <Button
               icon={emojiPicker ? "close" : "add"}
-              content={emojiPicker ? "close" : null}
+              content={emojiPicker ? "Close" : null}
               onClick={this.handleTogglePicker}
             />
           }
